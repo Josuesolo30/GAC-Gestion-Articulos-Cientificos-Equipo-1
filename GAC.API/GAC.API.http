@@ -1,0 +1,6 @@
+@GAC.API_HostAddress = http://localhost:5053
+
+GET {{GAC.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
