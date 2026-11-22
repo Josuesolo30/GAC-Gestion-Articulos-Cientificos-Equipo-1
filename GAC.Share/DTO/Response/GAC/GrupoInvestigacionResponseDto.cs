@@ -2,4 +2,4 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GAC.Share.DTO.Response.GAC;
 
-public sealed record GrupoInvestigacionResponseDto(Guid Id, string Nombre);
+public sealed record GrupoInvestigacionResponseDto(Guid Id, string Nombre, IReadOnlyList<Guid>? TemaIds = null);

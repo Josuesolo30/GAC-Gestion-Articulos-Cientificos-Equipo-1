@@ -1,0 +1,48 @@
+@page "{catalogo}/{id:guid?}"
+@model GAC.WebUIPages.Pages.Catalogos.EditarModel
+@{
+    ViewData["Title"] = Model.Id.HasValue ? "Editar registro" : "Nuevo registro";
+}
+<h1>@ViewData["Title"]</h1><p class="lead-note">@Model.Titulo</p>
+<form class="panel" method="post" asp-route-catalogo="@Model.Catalogo" asp-route-id="@Model.Id">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="fields">
+    @if (Model.Catalogo != "ediciones-congreso")
+    {
+        <div class="full"><label class="form-label" asp-for="Datos.Nombre">@(Model.Catalogo == "palabras-clave" ? "Palabra clave" : "Nombre")</label>
+            <input class="form-control" asp-for="Datos.Nombre" required /></div>
+    }
+    @if (Model.Catalogo == "congresos")
+    {
+        <div><label class="form-label" asp-for="Datos.Tipo">Tipo de congreso</label><select class="form-select" asp-for="Datos.Tipo"><option value="1">Nacional</option><option value="2">Internacional</option></select></div>
+    }
+    @if (Model.Catalogo is "congresos" or "revistas")
+    {
+        <div><label class="form-label" asp-for="Datos.Frecuencia">Frecuencia</label><input class="form-control" asp-for="Datos.Frecuencia" required /></div>
+        <div><label class="form-label" asp-for="Datos.Anio">@(Model.Catalogo == "congresos" ? "Año de primera celebración" : "Año de inicio de publicación")</label>
+            <input class="form-control" asp-for="Datos.Anio" type="number" min="1" max="9999" required /></div>
+    }
+    @if (Model.Catalogo == "ediciones-congreso")
+    {
+        <div><label class="form-label" asp-for="Datos.CongresoId">Congreso</label><select class="form-select" asp-for="Datos.CongresoId" asp-items="Model.Congresos" required><option value="">Selecciona un congreso</option></select></div>
+        <div><label class="form-label" asp-for="Datos.Edicion">Edición</label><input class="form-control" asp-for="Datos.Edicion" required /></div>
+        <div><label class="form-label" asp-for="Datos.Ciudad">Ciudad</label><input class="form-control" asp-for="Datos.Ciudad" required /></div>
+        <div><label class="form-label" asp-for="Datos.Pais">País</label><input class="form-control" asp-for="Datos.Pais" /><p class="hint mb-0">Obligatorio si el congreso es internacional.</p></div>
+        <div><label class="form-label" asp-for="Datos.Inicio">Fecha de inicio</label><input class="form-control" asp-for="Datos.Inicio" type="date" required /></div>
+        <div><label class="form-label" asp-for="Datos.Fin">Fecha final</label><input class="form-control" asp-for="Datos.Fin" type="date" required /></div>
+    }
+    @if (Model.Catalogo == "revistas")
+    {
+        <div><label class="form-label" asp-for="Datos.Editor">Editor</label><input class="form-control" asp-for="Datos.Editor" required /></div>
+        <div><label class="form-label" asp-for="Datos.ColaboradorIds">Investigadores colaboradores (opcional)</label>
+            <select class="form-select" asp-for="Datos.ColaboradorIds" asp-items="Model.Investigadores" size="4"></select></div>
+    }
+    @if (Model.Catalogo is "revistas" or "grupos-investigacion")
+    {
+        <div><label class="form-label" asp-for="Datos.TemaIds">Temas</label><select class="form-select" asp-for="Datos.TemaIds" asp-items="Model.Temas" size="4"></select>
+        <p class="hint mb-0">@(Model.Catalogo == "revistas" ? "Selecciona al menos uno." : "Los temas del grupo son opcionales.")</p></div>
+    }
+    </div>
+    <div class="actions"><button class="btn btn-primary" type="submit">Guardar</button>
+    <a class="btn btn-outline-secondary" asp-page="./Index" asp-route-catalogo="@Model.Catalogo">Cancelar</a></div>
+</form>

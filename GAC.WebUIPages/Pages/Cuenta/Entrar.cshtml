@@ -1,0 +1,19 @@
+@page
+@model GAC.WebUIPages.Pages.Cuenta.EntrarModel
+@{ ViewData["Title"] = "Iniciar sesión"; }
+<section class="login-card panel">
+    <p class="eyebrow">Equipo 1 · UNICDA</p>
+    <h1>Iniciar sesión</h1>
+    <p class="lead-note">Accede al catálogo de artículos científicos de tu grupo.</p>
+    <form method="post">
+        <input asp-for="ReturnUrl" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <label class="form-label" asp-for="Datos.Email">Correo</label>
+        <input class="form-control" asp-for="Datos.Email" autocomplete="username" />
+        <span asp-validation-for="Datos.Email" class="text-danger"></span>
+        <label class="form-label mt-3" asp-for="Datos.Password">Contraseña</label>
+        <input class="form-control" asp-for="Datos.Password" autocomplete="current-password" />
+        <span asp-validation-for="Datos.Password" class="text-danger"></span>
+        <button class="btn btn-primary mt-4 w-100" type="submit">Entrar</button>
+    </form>
+</section>

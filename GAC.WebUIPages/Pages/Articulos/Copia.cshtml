@@ -1,0 +1,32 @@
+@page "{id:guid}"
+@model GAC.WebUIPages.Pages.Articulos.CopiaModel
+@{ ViewData["Title"] = "Copia física"; }
+<h1>Copia física</h1><p class="lead-note">@Model.Articulo.Titulo</p>
+<form method="post" asp-route-id="@Model.Articulo.Id" class="panel">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="fields">
+        <div><label class="form-label" asp-for="Datos.GrupoInvestigacionId">Grupo que conserva la copia</label>
+        <select class="form-select" asp-for="Datos.GrupoInvestigacionId" asp-items="Model.Grupos"><option value="">Selecciona un grupo</option></select></div>
+        <div><label class="form-label" asp-for="Datos.Tipo">Tipo de ubicación</label>
+        <select class="form-select" asp-for="Datos.Tipo" data-controla="ubicacion"><option value="1">Laboratorio</option><option value="2">Despacho</option></select></div>
+        <div class="fields full" data-grupo="ubicacion" data-valor="1">
+            <div><label class="form-label" asp-for="Datos.Laboratorio">Laboratorio</label><input class="form-control" asp-for="Datos.Laboratorio" /></div>
+            <div><label class="form-label" asp-for="Datos.Estanteria">Estantería</label><input class="form-control" asp-for="Datos.Estanteria" /></div>
+        </div>
+        <div class="fields full" data-grupo="ubicacion" data-valor="2">
+            <div><label class="form-label" asp-for="Datos.InvestigadorId">Investigador responsable</label>
+            <select class="form-select" asp-for="Datos.InvestigadorId" asp-items="Model.Investigadores"><option value="">Selecciona un miembro</option></select>
+            <p class="hint mb-0">El investigador debe pertenecer al grupo elegido.</p></div>
+            <div><label class="form-label" asp-for="Datos.Despacho">Despacho</label><input class="form-control" asp-for="Datos.Despacho" /></div>
+        </div>
+    </div>
+    <div class="actions"><button class="btn btn-primary" type="submit">Guardar ubicación</button>
+    <a class="btn btn-outline-secondary" asp-page="./Detalle" asp-route-id="@Model.Articulo.Id">Cancelar</a></div>
+</form>
+@if (Model.Articulo.Ubicacion is not null)
+{
+    <details class="panel"><summary>Retirar la copia física</summary>
+    <p class="mt-2">Confirma si el grupo ya no dispone de esta copia. El artículo seguirá en el catálogo.</p>
+    <form method="post" asp-page-handler="Retirar" asp-route-id="@Model.Articulo.Id"><button class="btn btn-outline-danger" type="submit">Confirmar que ya no hay copia</button></form>
+    </details>
+}

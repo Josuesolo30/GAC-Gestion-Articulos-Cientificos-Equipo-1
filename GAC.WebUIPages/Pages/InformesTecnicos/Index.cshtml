@@ -1,35 +1,21 @@
-﻿@page
+@page
 @model GAC.WebUIPages.Pages.InformesTecnicos.IndexModel
-@{
-    ViewData["Title"] = "Informes técnicos";
-}
-
-<h1>Informes técnicos</h1>
-
-@if (Model.Error is { } error)
-{
-    <p class="alert alert-danger" role="alert">@error</p>
-}
-else if (Model.Informes.Count == 0)
-{
-    <p>Todavía no hay informes técnicos registrados.</p>
-}
+@{ ViewData["Title"] = "Informes técnicos"; }
+<div class="toolbar"><div><h1>Informes técnicos</h1><p class="lead-note">Consulta número, centro y fecha de publicación.</p></div>
+<a class="btn btn-primary" asp-page="/Articulos/Editar" asp-route-tipo="1">Nuevo informe</a></div>
+<section class="panel">
+@if (Model.Informes.Count == 0) { <p>Todavía no hay informes técnicos registrados.</p> }
 else
 {
-    <table class="table">
-        <thead>
-            <tr><th>Número</th><th>Título</th><th>Centro</th><th>Publicación</th></tr>
-        </thead>
+    <div class="table-responsive"><table class="table">
+        <thead><tr><th scope="col">Número</th><th scope="col">Título</th><th scope="col">Centro</th><th scope="col">Publicación</th></tr></thead>
         <tbody>
-            @foreach (var informe in Model.Informes)
-            {
-                <tr>
-                    <td>@informe.NumeroInforme</td>
-                    <td>@informe.Titulo</td>
-                    <td>@informe.CentroPublicacion</td>
-                    <td>@($"{informe.MesPublicacion:D2}/{informe.AnioPublicacion}")</td>
-                </tr>
-            }
+        @foreach (var i in Model.Informes)
+        {
+            <tr><td>@i.NumeroInforme</td><td><a asp-page="/Articulos/Detalle" asp-route-id="@i.Id">@i.Titulo</a></td>
+            <td>@i.CentroPublicacion</td><td>@($"{i.MesPublicacion:D2}/{i.AnioPublicacion}")</td></tr>
+        }
         </tbody>
-    </table>
+    </table></div>
 }
+</section>

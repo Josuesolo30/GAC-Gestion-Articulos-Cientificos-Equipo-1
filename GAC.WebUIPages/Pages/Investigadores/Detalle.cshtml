@@ -1,0 +1,17 @@
+@page "{id:guid}"
+@model GAC.WebUIPages.Pages.Investigadores.DetalleModel
+@{ var f = Model.Ficha; var i = f.Investigador; ViewData["Title"] = i.Nombre; }
+<div class="toolbar"><div><p class="eyebrow">Investigador</p><h1>@i.Nombre</h1><a asp-page="./Index">Volver al directorio</a></div>
+<div class="actions"><a class="btn btn-primary" asp-page="./Editar" asp-route-id="@i.Id">Editar</a>
+<a class="btn btn-outline-danger" asp-page="./Eliminar" asp-route-id="@i.Id">Eliminar</a></div></div>
+<section class="panel">
+    <dl>
+        <dt>Centro de trabajo</dt><dd>@i.CentroTrabajo</dd><dt>Correo</dt><dd>@(i.CorreoElectronico ?? "No informado")</dd>
+        <dt>Grupos</dt><dd>@(f.Grupos.Count == 0 ? "Externo al grupo" : string.Join(", ", f.Grupos.Select(x => x.Nombre)))</dd>
+        <dt>Temas</dt><dd>@(f.Temas.Count == 0 ? "No informados" : string.Join(", ", f.Temas.Select(x => x.Nombre)))</dd>
+    </dl>
+</section>
+<section class="panel"><h2>Artículos</h2>
+    @if (f.Articulos.Count == 0) { <p class="mb-0">Sin artículos registrados.</p> }
+    else { <ul>@foreach (var a in f.Articulos) { <li><a asp-page="/Articulos/Detalle" asp-route-id="@a.Id">@a.Nombre</a></li> }</ul> }
+</section>

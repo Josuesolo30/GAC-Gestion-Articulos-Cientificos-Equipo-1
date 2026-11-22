@@ -1,0 +1,10 @@
+@page "{catalogo}/{id:guid}"
+@model GAC.WebUIPages.Pages.Catalogos.EliminarModel
+@{ ViewData["Title"] = "Eliminar registro"; }
+<section class="panel"><h1>Eliminar registro</h1><p>¿Confirmas que deseas eliminar <strong>@Model.Nombre</strong>?</p>
+<div asp-validation-summary="All" class="text-danger"></div>
+<form method="post" asp-route-catalogo="@Model.Catalogo" asp-route-id="@Model.Id">
+    <div class="actions"><button class="btn btn-danger" type="submit">Confirmar eliminación</button>
+    <a class="btn btn-outline-secondary" asp-page="./Index" asp-route-catalogo="@Model.Catalogo">Cancelar</a></div>
+</form>
+</section>

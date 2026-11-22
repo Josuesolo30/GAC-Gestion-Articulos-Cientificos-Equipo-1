@@ -1,0 +1,38 @@
+@page "{id:guid?}"
+@model GAC.WebUIPages.Pages.Articulos.EditarModel
+@{ ViewData["Title"] = Model.Id.HasValue ? "Editar artículo" : "Nuevo artículo"; }
+<div class="toolbar"><div><h1>@ViewData["Title"]</h1><p class="lead-note">Completa los datos comunes y los de la publicación.</p></div></div>
+<form method="post" class="panel" asp-route-id="@Model.Id">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="fields">
+        <div class="full"><label class="form-label" asp-for="Datos.Titulo">Título</label>
+            <input class="form-control" asp-for="Datos.Titulo" required /><span asp-validation-for="Datos.Titulo" class="text-danger"></span></div>
+        <div><label class="form-label" asp-for="Datos.CorreoContacto">Correo de contacto (opcional)</label>
+            <input class="form-control" asp-for="Datos.CorreoContacto" type="email" /><span asp-validation-for="Datos.CorreoContacto" class="text-danger"></span></div>
+        <div><label class="form-label" asp-for="Datos.TipoPublicacion">Modalidad</label>
+            @if (Model.Id.HasValue)
+            {
+                <input asp-for="Datos.TipoPublicacion" type="hidden" data-controla="modalidad" />
+                <p class="mb-0">@GAC.WebUIPages.Pages.PaginaGac.TipoArticulo(Model.Datos.TipoPublicacion)</p>
+            }
+            else
+            {
+                <select class="form-select" asp-for="Datos.TipoPublicacion" data-controla="modalidad">
+                    <option value="1">Informe técnico</option><option value="2">Acta de congreso</option><option value="3">Revista científica</option>
+                </select>
+            }
+        </div>
+        <div><label class="form-label" asp-for="Datos.InvestigadorIds">Autores</label>
+            <select class="form-select" asp-for="Datos.InvestigadorIds" asp-items="Model.Autores" size="5"></select>
+            <span asp-validation-for="Datos.InvestigadorIds" class="text-danger"></span>
+            <p class="hint mb-0">Selecciona al menos uno. Puedes <a asp-page="/Investigadores/Editar">registrar un investigador</a> si falta.</p></div>
+        <div><label class="form-label" asp-for="Datos.PalabraClaveIds">Palabras clave</label>
+            <select class="form-select" asp-for="Datos.PalabraClaveIds" asp-items="Model.Palabras" size="5"></select>
+            <span asp-validation-for="Datos.PalabraClaveIds" class="text-danger"></span>
+            <p class="hint mb-0">Usa Ctrl, o Cmd en Mac, para seleccionar varias opciones. <a asp-page="/Catalogos/Index" asp-route-catalogo="palabras-clave">Ver palabras clave</a></p></div>
+    </div>
+    <hr /><partial name="_CamposModalidad" model="Model" />
+    <div class="actions"><button class="btn btn-primary" type="submit">Guardar artículo</button>
+    @if (Model.Id is Guid id) { <a class="btn btn-outline-secondary" asp-page="./Detalle" asp-route-id="@id">Cancelar</a> }
+    else { <a class="btn btn-outline-secondary" asp-page="./Index">Cancelar</a> }</div>
+</form>

@@ -12,4 +12,6 @@ public sealed class InvestigadorRequestDto
 
     [EmailAddress, MaxLength(254)]
     public string? CorreoElectronico { get; init; }
+    public IReadOnlyList<Guid>? TemaIds { get; init; }
+    public IReadOnlyList<Guid>? GrupoIds { get; init; }
 }

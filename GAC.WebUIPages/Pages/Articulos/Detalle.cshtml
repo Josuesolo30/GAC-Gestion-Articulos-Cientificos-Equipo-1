@@ -1,0 +1,64 @@
+@page "{id:guid}"
+@model GAC.WebUIPages.Pages.Articulos.DetalleModel
+@{
+    var f = Model.Ficha;
+    var a = f.Articulo;
+    ViewData["Title"] = a.Titulo;
+}
+<div class="toolbar"><div>
+    <p class="eyebrow">@GAC.WebUIPages.Pages.PaginaGac.TipoArticulo(a.TipoPublicacion)</p>
+    <h1>@a.Titulo</h1>
+    <a asp-page="./Index">Volver a artículos</a>
+</div><div class="actions">
+    <a class="btn btn-primary" asp-page="./Editar" asp-route-id="@a.Id">Editar</a>
+    <a class="btn btn-outline-secondary" asp-page="./CambiarModalidad" asp-route-id="@a.Id">Cambiar modalidad</a>
+    <a class="btn btn-outline-danger" asp-page="./Eliminar" asp-route-id="@a.Id">Eliminar</a>
+</div></div>
+<section class="panel">
+    <h2>Datos generales</h2>
+    <dl>
+        <dt>Autores</dt><dd>
+            @foreach (var autor in f.Autores) { <div><a asp-page="/Investigadores/Detalle" asp-route-id="@autor.Id">@autor.Nombre</a></div> }
+        </dd>
+        <dt>Palabras clave</dt><dd>@string.Join(", ", f.PalabrasClave.Select(p => p.Nombre))</dd>
+        <dt>Correo de contacto</dt><dd>@(a.CorreoContacto ?? "No informado")</dd>
+    </dl>
+</section>
+<section class="panel">
+    <h2>Publicación</h2>
+    @if (f.Informe is { } i)
+    {
+        <dl><dt>Número de informe</dt><dd>@i.NumeroInforme</dd>
+        <dt>Tipo de informe</dt><dd>@f.TipoInforme?.Nombre</dd>
+        <dt>Centro</dt><dd>@i.CentroPublicacion</dd>
+        <dt>Mes y año</dt><dd>@($"{i.MesPublicacion:D2}/{i.AnioPublicacion}")</dd></dl>
+    }
+    @if (f.Congreso is { } c && f.Edicion is { } e)
+    {
+        <dl><dt>Congreso</dt><dd>@c.Nombre</dd><dt>Edición</dt><dd>@e.Edicion</dd>
+        <dt>Tipo de congreso</dt><dd>@(c.Tipo == 2 ? "Internacional" : "Nacional")</dd>
+        <dt>Ciudad</dt><dd>@e.Ciudad</dd><dt>País</dt><dd>@(e.Pais ?? "No informado")</dd>
+        <dt>Fechas</dt><dd>@e.FechaInicio.ToString("dd/MM/yyyy") al @e.FechaFin.ToString("dd/MM/yyyy")</dd>
+        <dt>Frecuencia</dt><dd>@c.FrecuenciaCelebracion</dd><dt>Primera celebración</dt><dd>@c.AnioPrimeraCelebracion</dd></dl>
+    }
+    @if (f.Revista is { } r && f.PublicacionRevista is { } p)
+    {
+        <dl><dt>Revista</dt><dd>@r.Nombre</dd><dt>Editor</dt><dd>@r.NombreEditor</dd>
+        <dt>Primera publicación</dt><dd>@r.AnioInicioPublicacion</dd><dt>Frecuencia</dt><dd>@r.FrecuenciaPublicacion</dd>
+        <dt>Temas</dt><dd>@string.Join(", ", f.TemasRevista.Select(t => t.Nombre))</dd>
+        <dt>Colaboradores de la revista</dt><dd>@(f.ColaboradoresRevista.Count == 0 ? "No informados" : string.Join(", ", f.ColaboradoresRevista.Select(x => x.Nombre)))</dd>
+        <dt>Número</dt><dd>@p.NumeroRevista</dd><dt>Páginas</dt><dd>@p.PaginaInicial–@p.PaginaFinal</dd>
+        <dt>Año de publicación</dt><dd>@p.AnioPublicacion</dd></dl>
+    }
+</section>
+<section class="panel">
+    <h2>Copia física</h2>
+    @if (a.Ubicacion is { } u)
+    {
+        <dl><dt>Grupo</dt><dd>@f.GrupoCopia?.Nombre</dd>
+        @if (u.Tipo == 1) { <dt>Laboratorio</dt><dd>@u.Laboratorio</dd><dt>Estantería</dt><dd>@u.Estanteria</dd> }
+        else { <dt>Despacho</dt><dd>@u.Despacho</dd><dt>Responsable</dt><dd>@f.ResponsableDespacho?.Nombre</dd> }</dl>
+    }
+    else { <p>El grupo no tiene una copia registrada.</p> }
+    <div class="actions"><a class="btn btn-outline-secondary" asp-page="./Copia" asp-route-id="@a.Id">@(a.Ubicacion is null ? "Registrar copia" : "Gestionar copia")</a></div>
+</section>

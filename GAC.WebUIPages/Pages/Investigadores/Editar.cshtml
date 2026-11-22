@@ -1,0 +1,17 @@
+@page "{id:guid?}"
+@model GAC.WebUIPages.Pages.Investigadores.EditarModel
+@{ ViewData["Title"] = Model.Id.HasValue ? "Editar investigador" : "Nuevo investigador"; }
+<h1>@ViewData["Title"]</h1><p class="lead-note">Puedes registrar a una persona aunque todavía no tenga publicaciones.</p>
+<form class="panel" method="post" asp-route-id="@Model.Id">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="fields">
+        <div><label class="form-label" asp-for="Datos.Nombre">Nombre</label><input class="form-control" asp-for="Datos.Nombre" required /><span asp-validation-for="Datos.Nombre" class="text-danger"></span></div>
+        <div><label class="form-label" asp-for="Datos.CentroTrabajo">Centro de trabajo</label><input class="form-control" asp-for="Datos.CentroTrabajo" required /><span asp-validation-for="Datos.CentroTrabajo" class="text-danger"></span></div>
+        <div><label class="form-label" asp-for="Datos.CorreoElectronico">Correo (opcional)</label><input class="form-control" asp-for="Datos.CorreoElectronico" type="email" /><span asp-validation-for="Datos.CorreoElectronico" class="text-danger"></span></div>
+        <div><label class="form-label" asp-for="Datos.GrupoIds">Grupos</label><select class="form-select" asp-for="Datos.GrupoIds" asp-items="Model.Grupos" size="4"></select><p class="hint">Sin grupos, figura como externo. Usa Ctrl o Cmd para selección múltiple.</p></div>
+        <div><label class="form-label" asp-for="Datos.TemaIds">Temas de investigación (opcional)</label><select class="form-select" asp-for="Datos.TemaIds" asp-items="Model.Temas" size="4"></select></div>
+    </div>
+    <div class="actions"><button class="btn btn-primary" type="submit">Guardar investigador</button>
+    @if (Model.Id is Guid id) { <a class="btn btn-outline-secondary" asp-page="./Detalle" asp-route-id="@id">Cancelar</a> }
+    else { <a class="btn btn-outline-secondary" asp-page="./Index">Cancelar</a> }</div>
+</form>
