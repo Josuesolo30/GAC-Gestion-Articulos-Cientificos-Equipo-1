@@ -1,3 +1,7 @@
+using GAC.Application.Extensions;
+
+
+
 namespace GAC.WebUIPages
 {
     public class Program
@@ -5,9 +9,12 @@ namespace GAC.WebUIPages
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
             builder.Services.AddRazorPages();
+
+            var apiUrl = builder.Configuration["GacApi:BaseUrl"]
+                ?? throw new InvalidOperationException("Configura GacApi:BaseUrl.");
+
+            builder.Services.AddGacApplication(new Uri(apiUrl));
 
             var app = builder.Build();
 

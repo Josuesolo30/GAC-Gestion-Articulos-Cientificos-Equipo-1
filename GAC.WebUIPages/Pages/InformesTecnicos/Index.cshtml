@@ -1,0 +1,35 @@
+﻿@page
+@model GAC.WebUIPages.Pages.InformesTecnicos.IndexModel
+@{
+    ViewData["Title"] = "Informes técnicos";
+}
+
+<h1>Informes técnicos</h1>
+
+@if (Model.Error is { } error)
+{
+    <p class="alert alert-danger" role="alert">@error</p>
+}
+else if (Model.Informes.Count == 0)
+{
+    <p>Todavía no hay informes técnicos registrados.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr><th>Número</th><th>Título</th><th>Centro</th><th>Publicación</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var informe in Model.Informes)
+            {
+                <tr>
+                    <td>@informe.NumeroInforme</td>
+                    <td>@informe.Titulo</td>
+                    <td>@informe.CentroPublicacion</td>
+                    <td>@($"{informe.MesPublicacion:D2}/{informe.AnioPublicacion}")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

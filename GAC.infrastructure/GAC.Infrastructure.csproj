@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.21" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GAC.Core\GAC.Domain.csproj" />
+    <ProjectReference Include="..\GAC.Application\GAC.Application.csproj" />
   </ItemGroup>
 
 </Project>

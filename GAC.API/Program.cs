@@ -1,4 +1,7 @@
-
+using GAC.Application.Contracts;
+using GAC.Infrastructure.Data;
+using GAC.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 namespace GAC.API
 {
     public class Program
@@ -12,6 +15,12 @@ namespace GAC.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            var connection = builder.Configuration.GetConnectionString("GacDb")
+    ?? throw new InvalidOperationException("Configura ConnectionStrings:GacDb.");
+
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+            builder.Services.AddScoped<IConsultaInformesTecnicos, ConsultaInformesTecnicos>();
 
             var app = builder.Build();
 
