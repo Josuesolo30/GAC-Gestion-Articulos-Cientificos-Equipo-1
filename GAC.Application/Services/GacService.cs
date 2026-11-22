@@ -1,4 +1,6 @@
 using GAC.Share.DTO.Request.GAC;
+using GAC.Share.DTO.Response;
+using Microsoft.AspNetCore.WebUtilities;
 using GAC.Share.DTO.Response.GAC;
 using GAC.Application.Constants;
 using GAC.Application.Contracts;
@@ -76,4 +78,21 @@ public sealed class GacService(HttpClientService http) : IGacService
     public ICatalogoCrud<ColaboracionRevistaRequestDto, ColaboracionRevistaResponseDto, (Guid RevistaId, Guid InvestigadorId)> ColaboracionesRevista { get; } =
         new CatalogoCrudHttp<ColaboracionRevistaRequestDto, ColaboracionRevistaResponseDto, (Guid RevistaId, Guid InvestigadorId)>(
             http, GacApiRoutes.ColaboracionesRevista, static (ruta, clave) => GacApiRoutes.ConPar(ruta, clave.RevistaId, clave.InvestigadorId));
+
+    public async Task<IReadOnlyList<ResumenArticuloDto>> BuscarArticulosAsync(FiltroArticulosDto filtro, CancellationToken ct = default) =>
+        (await http.LeerAsync<ResumenArticuloDto[]>(QueryHelpers.AddQueryString(GacApiRoutes.Articulos + "/buscar",
+            new Dictionary<string, string?> { ["texto"] = filtro.Texto, ["campo"] = filtro.Campo, ["tipo"] = filtro.Tipo?.ToString(), ["tieneCopia"] = filtro.TieneCopia?.ToString() }), false, ct))!;
+
+    public Task<FichaArticuloDto?> ObtenerFichaArticuloAsync(Guid id, CancellationToken ct = default) =>
+        http.LeerAsync<FichaArticuloDto>(GacApiRoutes.ConId(GacApiRoutes.Articulos, id) + "/ficha", true, ct);
+
+    public async Task<IReadOnlyList<InvestigadorResponseDto>> BuscarInvestigadoresAsync(FiltroInvestigadoresDto filtro, CancellationToken ct = default) =>
+        (await http.LeerAsync<InvestigadorResponseDto[]>(QueryHelpers.AddQueryString(GacApiRoutes.Investigadores + "/buscar",
+            new Dictionary<string, string?> { ["texto"] = filtro.Texto, ["campo"] = filtro.Campo }), false, ct))!;
+
+    public Task<FichaInvestigadorDto?> ObtenerFichaInvestigadorAsync(Guid id, CancellationToken ct = default) =>
+        http.LeerAsync<FichaInvestigadorDto>(GacApiRoutes.ConId(GacApiRoutes.Investigadores, id) + "/ficha", true, ct);
+
+    public Task<GeneralResponseDto> CambiarModalidadAsync(Guid id, CambioModalidadRequestDto solicitud, CancellationToken ct = default) =>
+        http.EscribirAsync(HttpMethod.Put, GacApiRoutes.ConId(GacApiRoutes.Articulos, id) + "/modalidad", solicitud, ct);
 }

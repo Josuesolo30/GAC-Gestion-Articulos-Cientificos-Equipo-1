@@ -15,4 +15,6 @@ public sealed class RevistaRequestDto
 
     [Required, MaxLength(80)]
     public string FrecuenciaPublicacion { get; init; } = string.Empty;
+    public IReadOnlyList<Guid>? TemaIds { get; init; }
+    public IReadOnlyList<Guid>? ColaboradorIds { get; init; }
 }

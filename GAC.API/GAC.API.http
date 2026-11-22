@@ -1,6 +1,10 @@
-@GAC.API_HostAddress = http://localhost:5053
+@GAC_API_HostAddress = https://localhost:7078
 
-GET {{GAC.API_HostAddress}}/weatherforecast/
+# Protegido: sin credencial devuelve HTTP 401.
+GET {{GAC_API_HostAddress}}/api/informes-tecnicos
 Accept: application/json
 
 ###
+
+# Inicia sesión desde Razor Pages para probar el flujo completo.
+# Las credenciales de preparación se guardan en secretos del proyecto GAC.API.

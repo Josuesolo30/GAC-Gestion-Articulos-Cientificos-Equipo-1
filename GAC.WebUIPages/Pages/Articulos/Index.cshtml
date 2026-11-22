@@ -1,0 +1,54 @@
+@page
+@model GAC.WebUIPages.Pages.Articulos.IndexModel
+@{ ViewData["Title"] = "Artículos"; }
+<div class="toolbar">
+    <div><p class="eyebrow">Catálogo general</p><h1>Artículos científicos</h1>
+    <p class="lead-note">Busca una publicación, revisa sus autores y localiza la copia física.</p></div>
+    <a class="btn btn-primary" asp-page="./Editar">Nuevo artículo</a>
+</div>
+<form class="panel" method="get">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="fields">
+        <div>
+            <label class="form-label" asp-for="Texto">Buscar</label>
+            <input class="form-control" asp-for="Texto" maxlength="250" placeholder="Ej. calidad del agua" />
+        </div><div>
+            <label class="form-label" asp-for="Campo">Buscar en</label>
+            <select class="form-select" asp-for="Campo">
+                <option value="todos">Todos los campos</option><option value="titulo">Título</option>
+                <option value="autor">Autor</option><option value="palabra">Palabra clave</option>
+            </select>
+        </div><div>
+            <label class="form-label" asp-for="Tipo">Modalidad</label>
+            <select class="form-select" asp-for="Tipo"><option value="">Todas</option><option value="1">Informe técnico</option><option value="2">Congreso</option><option value="3">Revista</option></select>
+        </div><div>
+            <label class="form-label" asp-for="TieneCopia">Copia física</label>
+            <select class="form-select" asp-for="TieneCopia"><option value="">Todas</option><option value="true">Con copia</option><option value="false">Sin copia</option></select>
+        </div>
+    </div>
+    <div class="actions"><button class="btn btn-primary" type="submit">Buscar</button>
+    <a class="btn btn-outline-secondary" asp-page="./Index">Limpiar filtros</a></div>
+</form>
+<section class="panel">
+    @if (Model.Resultados.Count == 0)
+    {
+        <p class="m-0">@(Model.Filtrado ? "No se encontraron coincidencias." : "Todavía no hay artículos registrados.")</p>
+    }
+    else
+    {
+        <p class="hint">@Model.Resultados.Count resultado(s)</p>
+        <div class="table-responsive"><table class="table mb-0">
+            <thead><tr><th scope="col">Título</th><th scope="col">Modalidad</th><th scope="col">Autores</th><th scope="col">Palabras clave</th><th scope="col">Copia</th></tr></thead>
+            <tbody>
+                @foreach (var art in Model.Resultados)
+                {
+                    <tr><td><a asp-page="./Detalle" asp-route-id="@art.Id">@art.Titulo</a></td>
+                    <td>@GAC.WebUIPages.Pages.PaginaGac.TipoArticulo(art.TipoPublicacion)</td>
+                    <td>@string.Join(", ", art.Autores.Select(x => x.Nombre))</td>
+                    <td>@string.Join(", ", art.PalabrasClave.Select(x => x.Nombre))</td>
+                    <td><span class="tag">@(art.TieneCopia ? "Con copia" : "Sin copia")</span></td></tr>
+                }
+            </tbody>
+        </table></div>
+    }
+</section>

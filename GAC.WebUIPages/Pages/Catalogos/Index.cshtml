@@ -1,0 +1,29 @@
+@page "{catalogo?}"
+@model GAC.WebUIPages.Pages.Catalogos.IndexModel
+@{ ViewData["Title"] = "Catálogos"; }
+<div class="toolbar"><div><p class="eyebrow">Configuración del catálogo</p><h1>@Model.Titulo</h1>
+    <p class="lead-note">Prepara las opciones que se usan en artículos e investigadores.</p></div>
+    <a class="btn btn-primary" asp-page="./Editar" asp-route-catalogo="@Model.Catalogo">Nuevo registro</a></div>
+<nav class="panel" aria-label="Tipos de catálogo">
+    <div class="actions mt-0">
+    @foreach (var item in GAC.WebUIPages.Pages.Catalogos.GestorCatalogos.Nombres)
+    {
+        <a class="btn btn-sm @(item.Key == Model.Catalogo ? "btn-primary" : "btn-outline-secondary")" asp-page="./Index" asp-route-catalogo="@item.Key">@item.Value</a>
+    }
+    </div>
+</nav>
+<section class="panel">
+@if (Model.Registros.Count == 0) { <p class="mb-0">Todavía no hay registros.</p> }
+else
+{
+    <div class="table-responsive"><table class="table"><thead><tr><th>Nombre</th><th>Descripción</th><th>Acciones</th></tr></thead><tbody>
+    @foreach (var x in Model.Registros)
+    {
+        <tr><td>@x.Nombre</td><td>@x.Detalle</td><td>
+            <a asp-page="./Editar" asp-route-catalogo="@Model.Catalogo" asp-route-id="@x.Id">Editar</a>
+            <a class="ms-2 text-danger" asp-page="./Eliminar" asp-route-catalogo="@Model.Catalogo" asp-route-id="@x.Id">Eliminar</a>
+        </td></tr>
+    }
+    </tbody></table></div>
+}
+</section>

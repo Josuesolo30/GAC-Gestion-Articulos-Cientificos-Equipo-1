@@ -1,0 +1,26 @@
+@model GAC.WebUIPages.Pages.Articulos.EditorArticulo
+<h2>Datos de publicación</h2>
+<div class="fields">
+    <div class="fields full" data-grupo="modalidad" data-valor="1">
+        <div><label class="form-label" asp-for="Datos.NumeroInforme">Número del informe</label><input class="form-control" asp-for="Datos.NumeroInforme" /></div>
+        <div><label class="form-label" asp-for="Datos.CentroPublicacion">Centro de publicación</label><input class="form-control" asp-for="Datos.CentroPublicacion" /></div>
+        <div><label class="form-label" asp-for="Datos.MesPublicacion">Mes</label><input class="form-control" asp-for="Datos.MesPublicacion" type="number" min="1" max="12" /></div>
+        <div><label class="form-label" asp-for="Datos.TipoInformeId">Tipo de informe</label><select class="form-select" asp-for="Datos.TipoInformeId" asp-items="Model.Tipos"><option value="">Selecciona uno</option></select>
+        <p class="hint mb-0"><a asp-page="/Catalogos/Index" asp-route-catalogo="tipos-informe">Ver tipos de informe</a></p></div>
+    </div>
+    <div class="full" data-grupo="modalidad" data-valor="2">
+        <label class="form-label" asp-for="Datos.EdicionCongresoId">Congreso y edición</label>
+        <select class="form-select" asp-for="Datos.EdicionCongresoId" asp-items="Model.Ediciones"><option value="">Selecciona una edición</option></select>
+        <p class="hint mb-0"><a asp-page="/Catalogos/Index" asp-route-catalogo="ediciones-congreso">Ver ediciones</a></p>
+    </div>
+    <div class="fields full" data-grupo="modalidad" data-valor="3">
+        <div><label class="form-label" asp-for="Datos.RevistaId">Revista</label><select class="form-select" asp-for="Datos.RevistaId" asp-items="Model.Revistas"><option value="">Selecciona una revista</option></select>
+        <p class="hint mb-0"><a asp-page="/Catalogos/Index" asp-route-catalogo="revistas">Ver revistas</a></p></div>
+        <div><label class="form-label" asp-for="Datos.NumeroRevista">Número de la revista</label><input class="form-control" asp-for="Datos.NumeroRevista" /></div>
+        <div><label class="form-label" asp-for="Datos.PaginaInicial">Página inicial</label><input class="form-control" asp-for="Datos.PaginaInicial" type="number" min="1" /></div>
+        <div><label class="form-label" asp-for="Datos.PaginaFinal">Página final</label><input class="form-control" asp-for="Datos.PaginaFinal" type="number" min="1" /></div>
+    </div>
+    <div data-grupo="modalidad" data-valor="1,3">
+        <label class="form-label" asp-for="Datos.AnioPublicacion">Año de publicación</label><input class="form-control" asp-for="Datos.AnioPublicacion" type="number" min="1" max="9999" />
+    </div>
+</div>

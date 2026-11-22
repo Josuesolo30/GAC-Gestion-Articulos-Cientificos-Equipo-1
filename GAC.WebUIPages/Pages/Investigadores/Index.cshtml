@@ -1,0 +1,25 @@
+@page
+@model GAC.WebUIPages.Pages.Investigadores.IndexModel
+@{ ViewData["Title"] = "Investigadores"; }
+<div class="toolbar"><div><h1>Investigadores</h1><p class="lead-note">Directorio de personas, grupos y temas de investigación.</p></div>
+<a class="btn btn-primary" asp-page="./Editar">Nuevo investigador</a></div>
+<form class="panel" method="get">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="fields"><div><label class="form-label" asp-for="Texto">Buscar</label><input class="form-control" asp-for="Texto" /></div>
+    <div><label class="form-label" asp-for="Campo">Buscar en</label>
+    <select class="form-select" asp-for="Campo"><option value="todos">Todos</option><option value="nombre">Nombre</option><option value="centro">Centro de trabajo</option><option value="tema">Tema</option></select></div></div>
+    <div class="actions"><button class="btn btn-primary" type="submit">Buscar</button><a class="btn btn-outline-secondary" asp-page="./Index">Limpiar</a></div>
+</form>
+<section class="panel">
+@if (Model.Resultados.Count == 0) { <p>No se encontraron investigadores.</p> }
+else
+{
+    <div class="table-responsive"><table class="table"><thead><tr><th>Nombre</th><th>Centro de trabajo</th><th>Grupo</th></tr></thead><tbody>
+    @foreach (var i in Model.Resultados)
+    {
+        <tr><td><a asp-page="./Detalle" asp-route-id="@i.Id">@i.Nombre</a></td><td>@i.CentroTrabajo</td>
+        <td><span class="tag">@(i.GrupoIds is { Count: > 0 } ? "Miembro" : "Externo")</span></td></tr>
+    }
+    </tbody></table></div>
+}
+</section>

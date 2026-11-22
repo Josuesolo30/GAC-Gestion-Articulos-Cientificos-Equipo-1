@@ -1,0 +1,17 @@
+@page "{id:guid}"
+@model GAC.WebUIPages.Pages.Articulos.CambiarModalidadModel
+@{ ViewData["Title"] = "Cambiar modalidad"; }
+<h1>Cambiar modalidad</h1><p class="lead-note">@Model.Articulo.Titulo · @GAC.WebUIPages.Pages.PaginaGac.TipoArticulo(Model.Articulo.TipoPublicacion)</p>
+<form class="panel" method="post" asp-route-id="@Model.Articulo.Id">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <label class="form-label" asp-for="Datos.TipoPublicacion">Nueva modalidad</label>
+    <select class="form-select" asp-for="Datos.TipoPublicacion" data-controla="modalidad">
+        @for (var tipo = 1; tipo <= 3; tipo++)
+        {
+            if (tipo != Model.Articulo.TipoPublicacion) { <option value="@tipo">@GAC.WebUIPages.Pages.PaginaGac.TipoArticulo(tipo)</option> }
+        }
+    </select>
+    <hr /><partial name="_CamposModalidad" model="Model" />
+    <div class="actions"><button class="btn btn-primary" type="submit">Confirmar cambio</button>
+    <a class="btn btn-outline-secondary" asp-page="./Detalle" asp-route-id="@Model.Articulo.Id">Cancelar</a></div>
+</form>
